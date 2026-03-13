@@ -1,0 +1,15 @@
+{
+  "name": "platon-dev-skills",
+  "plugins": [
+    {
+      "name": "platon-chainlist",
+      "source": "./platon-chainlist",
+      "description": "Validated PlatON dev and mainnet Chainlist info skill."
+    },
+    {
+      "name": "platon-cli",
+      "source": "./platon-cli",
+      "description": "PlatON on-chain query skill built around Foundry cast."
+    }
+  ]
+}

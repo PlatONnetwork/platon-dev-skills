@@ -1,0 +1,4 @@
+interface:
+  display_name: "PlatON CLI"
+  short_description: "Query PlatON chain data with Foundry cast"
+  default_prompt: "Use $platon-cli to inspect PlatON chain data with Foundry cast."
