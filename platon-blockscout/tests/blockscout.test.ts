@@ -38,6 +38,28 @@ function withMockFetch(payload: unknown, fn: () => Promise<void>): Promise<void>
   });
 }
 
+function withDynamicMockFetch(
+  responder: (url: URL) => unknown,
+  fn: () => Promise<void>,
+): Promise<void> {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (input) => {
+    const requestUrl =
+      typeof input === "string"
+        ? new URL(input)
+        : input instanceof URL
+          ? input
+          : new URL(input.url);
+    return new Response(JSON.stringify(responder(requestUrl)), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  };
+  return fn().finally(() => {
+    globalThis.fetch = originalFetch;
+  });
+}
+
 test("lookup-token maps address_hash search results", async () => {
   const payload = await fixture("search-usdt.json");
   await withMockFetch(payload, async () => {
@@ -180,9 +202,13 @@ test("get-transaction-logs maps nested address and pagination", async () => {
 
     assert.deepEqual(result.pagination, {
       next_cursor: JSON.stringify({
-        block_number: 143967685,
-        index: 0,
-        items_count: 1,
+        kind: "log_page_v1",
+        upstream: {
+          block_number: 143967685,
+          index: 0,
+          items_count: 1,
+        },
+        offset: 0,
       }),
       has_next: true,
     });
@@ -254,6 +280,59 @@ test("get-address-logs maps address-emitted logs", async () => {
       ],
       total_returned: 1,
     });
+  });
+});
+
+test("get-address-logs paginates locally without duplicates when upstream ignores items_count", async () => {
+  const firstBatch = {
+    items: [
+      { block_number: 3, transaction_hash: "0xaaa", topics: ["0x1"], data: "0x01", decoded: null, index: 0 },
+      { block_number: 2, transaction_hash: "0xbbb", topics: ["0x2"], data: "0x02", decoded: null, index: 1 },
+      { block_number: 1, transaction_hash: "0xccc", topics: ["0x3"], data: "0x03", decoded: null, index: 2 },
+    ],
+    next_page_params: { block_number: 1, index: 2, items_count: 50 },
+  };
+  const secondBatch = {
+    items: [
+      { block_number: 0, transaction_hash: "0xddd", topics: ["0x4"], data: "0x04", decoded: null, index: 0 },
+      { block_number: 0, transaction_hash: "0xeee", topics: ["0x5"], data: "0x05", decoded: null, index: 1 },
+    ],
+    next_page_params: null,
+  };
+
+  await withDynamicMockFetch((url) => {
+    const blockNumber = url.searchParams.get("block_number");
+    return blockNumber === "1" ? secondBatch : firstBatch;
+  }, async () => {
+    const page1 = await getAddressLogs(
+      { command: "get-address-logs", network: "mainnet", raw: false },
+      "0xeac734fb7581D8eB2CE4949B0896FC4E76769509",
+      2,
+    );
+    const page2 = await getAddressLogs(
+      { command: "get-address-logs", network: "mainnet", raw: false },
+      "0xeac734fb7581D8eB2CE4949B0896FC4E76769509",
+      2,
+      page1.pagination?.next_cursor,
+    );
+    const page3 = await getAddressLogs(
+      { command: "get-address-logs", network: "mainnet", raw: false },
+      "0xeac734fb7581D8eB2CE4949B0896FC4E76769509",
+      2,
+      page2.pagination?.next_cursor,
+    );
+
+    const hashes = [
+      ...((page1.data as JsonObject).items as JsonObject[]).map((item) => item.transaction_hash),
+      ...((page2.data as JsonObject).items as JsonObject[]).map((item) => item.transaction_hash),
+      ...((page3.data as JsonObject).items as JsonObject[]).map((item) => item.transaction_hash),
+    ];
+
+    assert.deepEqual(hashes, ["0xaaa", "0xbbb", "0xccc", "0xddd", "0xeee"]);
+    assert.equal(new Set(hashes).size, hashes.length);
+    assert.equal(page1.pagination?.has_next, true);
+    assert.equal(page2.pagination?.has_next, true);
+    assert.equal(page3.pagination?.has_next, false);
   });
 });
 

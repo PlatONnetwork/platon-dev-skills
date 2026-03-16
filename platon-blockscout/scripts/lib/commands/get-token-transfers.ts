@@ -1,4 +1,4 @@
-import { arrayValue, fetchBlockscout, maybeRaw, objectValue, type CommandContext } from "./common.ts";
+import { applyCursorParams, arrayValue, fetchBlockscout, maybeRaw, objectValue, type CommandContext } from "./common.ts";
 
 export async function getTokenTransfers(
   ctx: CommandContext,
@@ -18,9 +18,8 @@ export async function getTokenTransfers(
   };
   if (to) query.age_to = to;
   if (token) query.token_contract_address_hashes_to_include = token;
-  if (cursor) query.cursor = cursor;
 
-  const { payload, pagination } = await fetchBlockscout(ctx, "/api/v2/advanced-filters", query);
+  const { payload, pagination } = await fetchBlockscout(ctx, "/api/v2/advanced-filters", applyCursorParams(query, cursor));
   const root = objectValue(payload);
   const items = arrayValue(root.items ?? root.data).map((entry) => {
     const item = objectValue(entry);

@@ -1,9 +1,8 @@
-import { arrayValue, fetchBlockscout, maybeRaw, objectValue, type CommandContext } from "./common.ts";
+import { applyCursorParams, arrayValue, fetchBlockscout, maybeRaw, objectValue, type CommandContext } from "./common.ts";
 
 export async function getNfts(ctx: CommandContext, address: string, pageSize: number, cursor?: string, includeInstances = false): Promise<{ data: unknown; pagination?: { next_cursor: string | null; has_next: boolean } }> {
   const query: Record<string, string | number> = { type: "ERC-721,ERC-404,ERC-1155", items_count: pageSize };
-  if (cursor) query.cursor = cursor;
-  const { payload, pagination } = await fetchBlockscout(ctx, `/api/v2/addresses/${address}/nft/collections`, query);
+  const { payload, pagination } = await fetchBlockscout(ctx, `/api/v2/addresses/${address}/nft/collections`, applyCursorParams(query, cursor));
   const root = objectValue(payload);
   const items = arrayValue(root.items ?? root.data).map((entry) => {
     const item = objectValue(entry);

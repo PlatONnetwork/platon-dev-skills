@@ -1,9 +1,8 @@
-import { arrayValue, fetchBlockscout, maybeRaw, objectValue, type CommandContext } from "./common.ts";
+import { applyCursorParams, arrayValue, fetchBlockscout, maybeRaw, objectValue, type CommandContext } from "./common.ts";
 
 export async function getTokens(ctx: CommandContext, address: string, pageSize: number, cursor?: string): Promise<{ data: unknown; pagination?: { next_cursor: string | null; has_next: boolean } }> {
   const query: Record<string, string | number> = { type: "ERC-20", items_count: pageSize };
-  if (cursor) query.cursor = cursor;
-  const { payload, pagination } = await fetchBlockscout(ctx, `/api/v2/addresses/${address}/tokens`, query);
+  const { payload, pagination } = await fetchBlockscout(ctx, `/api/v2/addresses/${address}/tokens`, applyCursorParams(query, cursor));
   const root = objectValue(payload);
   const items = arrayValue(root.items ?? root.data).map((entry) => {
     const item = objectValue(entry);
