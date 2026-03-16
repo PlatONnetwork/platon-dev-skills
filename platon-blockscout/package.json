@@ -1,0 +1,9 @@
+{
+  "name": "platon-blockscout-skill",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/blockscout.test.ts",
+    "blockscout": "node scripts/blockscout.ts"
+  }
+}

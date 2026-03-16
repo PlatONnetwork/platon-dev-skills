@@ -1,0 +1,29 @@
+{
+  "items": [
+    {
+      "token": {
+        "address_hash": "0x3795C36e7D12A8c252A20C5a7B455f7c57b60283",
+        "decimals": "18",
+        "exchange_rate": null,
+        "name": "Dai Stablecoin",
+        "symbol": "DAI",
+        "total_supply": "15074449147022542429113",
+        "type": "ERC-20"
+      },
+      "value": "168499813001863533"
+    },
+    {
+      "token": {
+        "address_hash": "0xeac734fb7581D8eB2CE4949B0896FC4E76769509",
+        "decimals": "6",
+        "exchange_rate": null,
+        "name": "Tether USD",
+        "symbol": "USDT",
+        "total_supply": "178368863786",
+        "type": "ERC-20"
+      },
+      "value": "746096"
+    }
+  ],
+  "next_page_params": null
+}

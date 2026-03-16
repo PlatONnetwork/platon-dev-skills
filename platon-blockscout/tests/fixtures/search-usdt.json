@@ -1,0 +1,24 @@
+{
+  "items": [
+    {
+      "address_hash": "0xeac734fb7581D8eB2CE4949B0896FC4E76769509",
+      "name": "Tether USD",
+      "symbol": "USDT",
+      "token_type": "ERC-20",
+      "total_supply": "178368863786",
+      "type": "token"
+    },
+    {
+      "address_hash": "0x6a2d262D56735DbA19Dd70682B39F6bE9a931D98",
+      "name": "Tether USD",
+      "symbol": "USDT",
+      "token_type": "ERC-20",
+      "total_supply": "16173026737",
+      "type": "token"
+    }
+  ],
+  "next_page_params": {
+    "next_page_params_type": "search",
+    "q": "USDT"
+  }
+}

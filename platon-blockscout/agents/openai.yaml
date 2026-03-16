@@ -1,0 +1,4 @@
+interface:
+  display_name: "PlatON Blockscout"
+  short_description: "Query PlatON explorer data from Blockscout"
+  default_prompt: "Use $platon-blockscout to inspect PlatON address, contract, token, NFT, block, and transaction data from Blockscout."

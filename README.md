@@ -6,6 +6,21 @@ This repository stores canonical reusable skills for PlatON development workflow
 
 - `platon-chainlist`: resolve validated PlatON mainnet and devnet Chainlist endpoints
 - `platon-cli`: query PlatON on-chain data with Foundry `cast`
+- `platon-blockscout`: query PlatON explorer data from Blockscout
+
+Current `platon-blockscout` coverage includes:
+
+- verified contract ABI and source inspection
+- address overview, token holdings, NFT collections
+- block details, transaction details, transaction logs
+- address-emitted logs
+- filtered transaction history and token transfer history
+
+Suggested skill boundary:
+
+- use `platon-chainlist` for validated RPC and explorer endpoint discovery
+- use `platon-cli` for direct RPC reads and writes
+- use `platon-blockscout` for explorer-style indexed data and verified-contract metadata
 
 Each skill follows the shared open skill contract:
 
@@ -20,6 +35,7 @@ Each skill follows the shared open skill contract:
 ├── .claude-plugin/
 │   └── marketplace.json
 ├── AGENTS.md
+├── platon-blockscout/
 ├── platon-chainlist/
 ├── platon-cli/
 └── README.md

@@ -1,0 +1,53 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "packetConsumerProxy_",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "base",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "quote",
+          "type": "string"
+        }
+      ],
+      "name": "getReferenceData",
+      "outputs": [],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "compiler_version": "v0.8.30+commit.73712a01",
+  "file_path": "contract.sol",
+  "language": "solidity",
+  "license_type": "mit",
+  "name": "PacketConsumerProxyConverter",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "proxy_type": null,
+  "implementations": [],
+  "source_code": "// SPDX-License-Identifier: Apache-2.0\npragma solidity ^0.8.23;\ncontract PacketConsumerProxyConverter {}",
+  "additional_sources": [
+    {
+      "file_path": "src/abstracts/StdReferenceBase.sol",
+      "source_code": "// SPDX-License-Identifier: Apache-2.0\nabstract contract StdReferenceBase {}"
+    },
+    {
+      "file_path": "src/interfaces/IPacketConsumerProxy.sol",
+      "source_code": "// SPDX-License-Identifier: Apache-2.0\ninterface IPacketConsumerProxy {}"
+    }
+  ]
+}

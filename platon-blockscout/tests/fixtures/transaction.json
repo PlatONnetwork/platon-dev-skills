@@ -1,0 +1,54 @@
+{
+  "raw_input": "0xa9059cbb000000000000000000000000d17a883640b25075dee4a1e8ed12f1c25a2ea5b700000000000000000000000000000000000000000000000000000000000b6270",
+  "hash": "0xd7fafb0eb6ae081594d8fcafbce60c0888fbf54c526c6b81b21e8f3c67dc50a3",
+  "result": "success",
+  "value": "0",
+  "from": {
+    "hash": "0xE7306Af0cF4efFfEbd93e9B68e42Ce35739794E0"
+  },
+  "gas_used": "44316",
+  "status": "ok",
+  "to": {
+    "hash": "0xeac734fb7581D8eB2CE4949B0896FC4E76769509",
+    "name": "Tether USD"
+  },
+  "method": "workMyDirefulOwner",
+  "gas_price": "5000000000",
+  "decoded_input": {
+    "method_call": "workMyDirefulOwner(uint256 arg0, uint256 arg1)",
+    "method_id": "a9059cbb",
+    "parameters": [
+      {
+        "name": "arg0",
+        "type": "uint256",
+        "value": "1195911627748534182214714589312827764282366010807"
+      },
+      {
+        "name": "arg1",
+        "type": "uint256",
+        "value": "746096"
+      }
+    ]
+  },
+  "token_transfers": [
+    {
+      "from": {
+        "hash": "0xE7306Af0cF4efFfEbd93e9B68e42Ce35739794E0"
+      },
+      "to": {
+        "hash": "0xd17A883640B25075dEE4A1e8eD12F1C25a2ea5b7"
+      },
+      "token": {
+        "address_hash": "0xeac734fb7581D8eB2CE4949B0896FC4E76769509",
+        "symbol": "USDT",
+        "name": "Tether USD"
+      },
+      "total": {
+        "decimals": "6",
+        "value": "746096"
+      }
+    }
+  ],
+  "timestamp": "2026-03-16T07:16:23.000000Z",
+  "block_number": 143967685
+}

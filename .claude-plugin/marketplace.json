@@ -10,6 +10,11 @@
       "name": "platon-cli",
       "source": "./platon-cli",
       "description": "PlatON on-chain query skill built around Foundry cast."
+    },
+    {
+      "name": "platon-blockscout",
+      "source": "./platon-blockscout",
+      "description": "PlatON Blockscout skill for explorer data, verified contracts, holdings, transactions, and logs."
     }
   ]
 }
