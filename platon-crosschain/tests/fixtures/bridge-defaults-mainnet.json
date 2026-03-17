@@ -1,0 +1,91 @@
+{
+  "code": 10000,
+  "msg": "SUCCESS",
+  "data": [
+    {
+      "id": 1,
+      "name": "ETH-PlatON",
+      "bridgeCode": "Ethereum-PlatON",
+      "status": 1,
+      "contract": {
+        "id": 1,
+        "srcProxyContract": "0xfb7b22ca585a2B400BE99F7F2a2282724C7b54D3",
+        "srcSwitch": 1,
+        "targetProxyContract": "0xfb7b22ca585a2B400BE99F7F2a2282724C7b54D3",
+        "targetSwitch": 1,
+        "srcContract": "0x1ecb3b1d213dbbfa994c9a04d08016fdf84192c7",
+        "targetContract": "0x1f68f4acf083b243d873e2883148040a3bdff5e1"
+      },
+      "srcChain": {
+        "id": 1,
+        "name": "Ethereum Mainnet",
+        "rpcUrl": "https://example-eth-rpc",
+        "wsUrl": "wss://example-eth-rpc",
+        "chainId": 1,
+        "currencySymbol": "ETH",
+        "scanUrl": "https://etherscan.io",
+        "status": 1
+      },
+      "desChain": {
+        "id": 2,
+        "name": "PlatON Mainnet",
+        "rpcUrl": "https://example-platon-rpc",
+        "wsUrl": "wss://example-platon-rpc",
+        "chainId": 210425,
+        "currencySymbol": "LAT",
+        "scanUrl": "https://scan.platon.network",
+        "status": 1
+      },
+      "assets": [
+        {
+          "id": 1,
+          "bridgeId": 1,
+          "sourceAddress": "0x0000000000000000000000000000000000000000",
+          "sourceName": "ETH",
+          "sourceDecimals": 18,
+          "sourceTokenType": 0,
+          "sourceSymbol": "ETH",
+          "targetAddress": "0x2cfD8BAc547f8b4f4FE8cf9edE6845d0c69CbCA1",
+          "targetName": "PlatON-Peg ETH",
+          "targetDecimals": 18,
+          "targetTokenType": 1,
+          "targetSymbol": "ETH",
+          "cap": "1000000000000000000000",
+          "sourceSingleMinCap": "10000000000000000",
+          "sourceSingleMaxCap": "10000000000000000000",
+          "targetSingleMinCap": "20000000000000000",
+          "targetSingleMaxCap": "5000000000000000000",
+          "sourceLockFee": "0",
+          "targetRedeemFee": "10000000000000000",
+          "sourceRollbackFee": "0",
+          "targetRollbackFee": "0",
+          "depositStatus": 1
+        },
+        {
+          "id": 2,
+          "bridgeId": 1,
+          "sourceAddress": "0xdeadbeef",
+          "sourceName": "Disabled",
+          "sourceDecimals": 18,
+          "sourceTokenType": 1,
+          "sourceSymbol": "DIS",
+          "targetAddress": "0xbeefdead",
+          "targetName": "Disabled",
+          "targetDecimals": 18,
+          "targetTokenType": 1,
+          "targetSymbol": "DIS",
+          "cap": "0",
+          "sourceSingleMinCap": "0",
+          "sourceSingleMaxCap": "0",
+          "targetSingleMinCap": "0",
+          "targetSingleMaxCap": "0",
+          "sourceLockFee": "0",
+          "targetRedeemFee": "0",
+          "sourceRollbackFee": "0",
+          "targetRollbackFee": "0",
+          "depositStatus": 0
+        }
+      ]
+    }
+  ]
+}

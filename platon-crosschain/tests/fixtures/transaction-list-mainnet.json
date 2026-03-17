@@ -1,0 +1,37 @@
+{
+  "code": 10000,
+  "msg": "SUCCESS",
+  "data": {
+    "total": 2371,
+    "current": 1,
+    "size": 1,
+    "items": [
+      {
+        "bridgeCode": "Ethereum-PlatON",
+        "eventType": 1,
+        "eventHistoryId": 2401,
+        "eventHistoryPendingId": null,
+        "txHash": "0xf9375ec62e2ed512f48e4a21e40c1fee4c9802498675bbcd191fee248162ca73",
+        "scanUrl": "https://scan.platon.network",
+        "remoteTxHash": "0xc0aa651a7f94b49fe7186580d06f2d59461e8b770a590ce41a8ad5416b1085f2",
+        "remoteScanUrl": "https://etherscan.io",
+        "symbol": "USDC",
+        "fromAddress": "0x4Fad376240974bE3cff592fad3170b44b92b20D0",
+        "fromValue": "29689.174579",
+        "toAddress": "0x4Fad376240974bE3cff592fad3170b44b92b20D0",
+        "toValue": "29688.174579",
+        "fromContractType": "PlatON Mainnet",
+        "fromContract": "0xdA396A3C7FC762643f658B47228CD51De6cE936d",
+        "toContractType": "Ethereum Mainnet",
+        "toContract": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        "fee": "1",
+        "date": "2026.03.17 17:06:58",
+        "decimals": 6,
+        "status": "4",
+        "rollbackStatus": "0",
+        "remotePendingTransactionId": "[\"0xc0aa651a7f94b49fe7186580d06f2d59461e8b770a590ce41a8ad5416b1085f2\"]",
+        "reason": ""
+      }
+    ]
+  }
+}

@@ -7,6 +7,7 @@ This repository stores canonical reusable skills for PlatON development workflow
 - `platon-chainlist`: resolve validated PlatON mainnet and devnet Chainlist endpoints
 - `platon-cli`: query PlatON on-chain data with Foundry `cast`
 - `platon-blockscout`: query PlatON explorer data from Blockscout
+- `platon-crosschain`: query PlatON bridge routes, bridge transactions, and crosschain contract guidance
 
 Current `platon-blockscout` coverage includes:
 
@@ -21,6 +22,7 @@ Suggested skill boundary:
 - use `platon-chainlist` for validated RPC and explorer endpoint discovery
 - use `platon-cli` for direct RPC reads and writes
 - use `platon-blockscout` for explorer-style indexed data and verified-contract metadata
+- use `platon-crosschain` for bridge route discovery, bridge transaction lookup, and crosschain bridge guidance
 
 Each skill follows the shared open skill contract:
 
@@ -38,6 +40,7 @@ Each skill follows the shared open skill contract:
 ├── platon-blockscout/
 ├── platon-chainlist/
 ├── platon-cli/
+├── platon-crosschain/
 └── README.md
 ```
 

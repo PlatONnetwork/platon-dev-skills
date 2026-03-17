@@ -15,6 +15,11 @@
       "name": "platon-blockscout",
       "source": "./platon-blockscout",
       "description": "PlatON Blockscout skill for explorer data, verified contracts, holdings, transactions, and logs."
+    },
+    {
+      "name": "platon-crosschain",
+      "source": "./platon-crosschain",
+      "description": "PlatON crosschain skill for bridge routes, bridge transactions, and cast-oriented contract guidance."
     }
   ]
 }

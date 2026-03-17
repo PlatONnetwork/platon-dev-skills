@@ -1,0 +1,4 @@
+interface:
+  display_name: "PlatON Crosschain"
+  short_description: "Query PlatON bridge routes, bridge transactions, and contract guidance"
+  default_prompt: "Use $platon-crosschain to look up PlatON bridge routes, supported assets, bridge transaction status, and cast-oriented contract guidance for crosschain flows."

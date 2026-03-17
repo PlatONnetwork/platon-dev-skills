@@ -1,0 +1,9 @@
+{
+  "name": "platon-crosschain",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/crosschain.test.ts",
+    "crosschain": "node scripts/crosschain.ts"
+  }
+}
