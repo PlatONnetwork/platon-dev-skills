@@ -158,6 +158,22 @@ cast nonce <ADDRESS> --rpc-url https://openapi2.platon.network/rpc
 cast chain-id --rpc-url https://openapi2.platon.network/rpc
 ```
 
+## Address Conversion
+
+Convert between PlatON `lat` bech32 addresses and `0x` hex addresses:
+
+```bash
+node platon-cli/scripts/address_convert.ts lat1jt5xgxdca0hvs9ffhsk0a70zykwd8vjfc5aefl
+```
+
+Convert `0x` to `lat`:
+
+```bash
+node platon-cli/scripts/address_convert.ts 0x92e86419B8EbeEC81529bC2CfEf9E2259CD3B249
+```
+
+The script auto-detects the input format and prints the converted address.
+
 ## Public RPC Endpoints
 
 | Network | Protocol | URL |
