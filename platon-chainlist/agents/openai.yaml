@@ -1,4 +1,4 @@
 interface:
   display_name: "Chainlist Query"
-  short_description: "Query PlatON chain info from chainlist"
-  default_prompt: "Use $platon-chainlist to look up validated PlatON dev or mainnet info from Chainlist."
+  short_description: "Query Chainlist info for PlatON and other EVM chains"
+  default_prompt: "Use $platon-chainlist to look up validated Chainlist RPC and explorer info for a requested chain and network."

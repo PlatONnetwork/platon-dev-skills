@@ -1,13 +1,13 @@
 ---
 name: platon-chainlist
-description: Query PlatON chain information from Chainlist data and return a validated summary for the dev or mainnet network. Use when a user asks for inputs like `dev info`, `testnet info`, `devnet info`, `mainnet info`, or `main info`.
+description: Query Chainlist data and return a validated summary for a requested chain and network such as PlatON, Avalanche, or Ethereum. Use when a user asks for inputs like `dev info`, `mainnet info`, `avalanche test`, `ethereum mainnet`, or similar chain-plus-network endpoint lookups.
 ---
 
 # Chainlist Query
 
 ## Overview
 
-Query `https://chainlist.org/rpcs.json` for PlatON entries and format the result for the user. Use the bundled TypeScript script for deterministic parsing instead of manually scanning the JSON.
+Query `https://chainlist.org/rpcs.json` for the requested chain and network, then format the result for the user. Use the bundled TypeScript script for deterministic parsing instead of manually scanning the JSON.
 
 ## Prerequisites
 
@@ -17,7 +17,7 @@ Require Node.js 24+ because the script uses the built-in `fetch` and `WebSocket`
 
 1. Run [`scripts/lookup_chain.ts`](./scripts/lookup_chain.ts) with the user's query text.
 2. Let the script fetch Chainlist directly unless the task provides a local JSON file.
-3. Return the summary view for the requested network.
+3. Return the summary view for the requested chain and network.
 
 ## Commands
 
@@ -28,12 +28,21 @@ node scripts/lookup_chain.ts dev info
 node scripts/lookup_chain.ts testnet info
 node scripts/lookup_chain.ts mainnet info
 node scripts/lookup_chain.ts main info
+node scripts/lookup_chain.ts avalanche test
+node scripts/lookup_chain.ts avalanche test --chainid 43113
+node scripts/lookup_chain.ts avalanche mainnet
+node scripts/lookup_chain.ts ethereum mainnet
+node scripts/lookup_chain.ts platon dev --chainid 20250407
 ```
 
 Supported network aliases:
 
-- `dev`, `testnet`, `devnet`
+- `dev`, `test`, `testnet`, `devnet`
 - `mainnet`, `main`
+
+Optional filters:
+
+- `--chainid <id>`: require the selected Chainlist entry to match the exact chain ID
 
 ## Default Chain Info
 
@@ -65,8 +74,12 @@ Faucet:
 
 Only the `info` command is supported.
 
+If no chain name is provided, default to `platon`.
+
+If `--chainid` is provided, it is an additional exact-match filter after chain name and network selection.
+
 Validate HTTP RPC endpoints by calling `eth_getBlockByNumber`. Validate `ws` / `wss` RPC endpoints with a WebSocket JSON-RPC request using the same method.
 
-If Chainlist contains multiple dev entries, prefer the one with the largest `chainId`.
+If multiple test/dev entries exist for the same chain, prefer the best-ranked entry for the requested network and then the largest `chainId`.
 
 If the user needs machine-readable output, use `--format json`.

@@ -46,19 +46,75 @@ const REQUEST_TIMEOUT = 10_000;
 const BLOCK_NUMBER_TO_CHECK = "latest";
 const USER_AGENT =
   "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36";
-const DEV_ALIASES = new Set(["dev", "testnet", "devnet"]);
+const TESTNET_ALIASES = new Set(["dev", "test", "testnet", "devnet"]);
 const MAINNET_ALIASES = new Set(["mainnet", "main"]);
+const TESTNET_KEYWORDS = [
+  "testnet",
+  "test",
+  "devnet",
+  "dev",
+  "fuji",
+  "sepolia",
+  "goerli",
+  "holesky",
+  "mumbai",
+  "amoy",
+  "preprod",
+];
+
+type TargetNetwork = "testnet" | "mainnet";
 
 function usage(): never {
-  console.error("Usage: node scripts/lookup_chain.ts <dev|testnet|devnet|mainnet|main> [info]");
+  console.error(
+    "Usage: node scripts/lookup_chain.ts [<chain name>] [<test|testnet|dev|devnet|mainnet|main>] [info] [--chainid <id>]",
+  );
   process.exit(1);
 }
 
-function normalizeNetwork(raw?: string): "dev" | "mainnet" {
+function normalizeNetwork(raw?: string): TargetNetwork {
   const value = (raw ?? "").trim().toLowerCase();
-  if (DEV_ALIASES.has(value)) return "dev";
+  if (TESTNET_ALIASES.has(value)) return "testnet";
   if (MAINNET_ALIASES.has(value)) return "mainnet";
   usage();
+}
+
+function parseCliArgs(
+  argv: string[],
+): { chainKeyword: string; network: TargetNetwork; command: string; chainId?: number } {
+  const parts: string[] = [];
+  let chainId: number | undefined;
+
+  for (let i = 0; i < argv.length; i += 1) {
+    const part = argv[i];
+    if (part === "--chainid") {
+      const rawValue = argv[i + 1];
+      if (!rawValue) usage();
+      const parsed = Number.parseInt(rawValue, 10);
+      if (!Number.isFinite(parsed) || parsed <= 0) usage();
+      chainId = parsed;
+      i += 1;
+      continue;
+    }
+    parts.push(part);
+  }
+
+  let command = "info";
+  if (parts.length > 0 && parts[parts.length - 1].trim().toLowerCase() === "info") {
+    command = "info";
+    parts.pop();
+  }
+
+  let network: TargetNetwork = "mainnet";
+  if (parts.length > 0) {
+    const last = parts[parts.length - 1].trim().toLowerCase();
+    if (TESTNET_ALIASES.has(last) || MAINNET_ALIASES.has(last)) {
+      network = normalizeNetwork(last);
+      parts.pop();
+    }
+  }
+
+  const chainKeyword = parts.join(" ").trim() || DEFAULT_CHAIN_KEYWORD;
+  return { chainKeyword, network, command, chainId };
 }
 
 function toChainId(value: unknown): number {
@@ -86,10 +142,10 @@ function isTargetChain(entry: ChainEntry, keyword: string): boolean {
   return JSON.stringify(entry).toLowerCase().includes(keyword.toLowerCase());
 }
 
-function classifyNetwork(entry: ChainEntry): "dev" | "mainnet" {
+function classifyNetwork(entry: ChainEntry): TargetNetwork {
   const text = collectText(entry);
-  for (const alias of DEV_ALIASES) {
-    if (text.includes(alias)) return "dev";
+  for (const alias of TESTNET_KEYWORDS) {
+    if (text.includes(alias)) return "testnet";
   }
   for (const alias of MAINNET_ALIASES) {
     if (text.includes(alias)) return "mainnet";
@@ -97,26 +153,39 @@ function classifyNetwork(entry: ChainEntry): "dev" | "mainnet" {
   return "mainnet";
 }
 
-function rankEntry(entry: ChainEntry, network: "dev" | "mainnet"): [number, number, number, number] {
+function rankEntry(entry: ChainEntry, chainKeyword: string, network: TargetNetwork): [number, number, number, number, number] {
   const text = collectText(entry);
-  const hasChainName = text.includes("platon") ? 1 : 0;
+  const keyword = chainKeyword.toLowerCase();
+  const exactFieldMatch = [entry.name, entry.title, entry.chain, entry.network, entry.shortName]
+    .map((value) => (value ?? "").trim().toLowerCase())
+    .some((value) => value === keyword)
+    ? 1
+    : 0;
+  const startsWithKeyword = text.startsWith(keyword) ? 1 : 0;
+  const hasChainName = text.includes(keyword) ? 1 : 0;
   const hasRpc = (entry.rpc?.length ?? 0) > 0 ? 1 : 0;
   const hasExplorer = (entry.explorers?.length ?? 0) > 0 ? 1 : 0;
-  const chainIdRank = network === "dev" ? toChainId(entry.chainId) : 0;
-  return [hasChainName, hasRpc, hasExplorer, chainIdRank];
+  const chainIdRank = network === "testnet" ? toChainId(entry.chainId) : 0;
+  return [exactFieldMatch, startsWithKeyword, hasChainName, hasRpc + hasExplorer, chainIdRank];
 }
 
-function chooseEntry(chainlist: ChainEntry[], network: "dev" | "mainnet"): ChainEntry {
-  const candidates = chainlist.filter((entry) => isTargetChain(entry, DEFAULT_CHAIN_KEYWORD));
+function chooseEntry(chainlist: ChainEntry[], chainKeyword: string, network: TargetNetwork, chainId?: number): ChainEntry {
+  const candidates = chainlist.filter((entry) => isTargetChain(entry, chainKeyword));
   if (candidates.length === 0) {
-    throw new Error(`No chainlist entries matched chain keyword '${DEFAULT_CHAIN_KEYWORD}'`);
+    throw new Error(`No chainlist entries matched chain keyword '${chainKeyword}'`);
   }
 
   const exactNetwork = candidates.filter((entry) => classifyNetwork(entry) === network);
-  const pool = exactNetwork.length > 0 ? exactNetwork : candidates;
+  const networkPool = exactNetwork.length > 0 ? exactNetwork : candidates;
+  const pool =
+    chainId === undefined ? networkPool : networkPool.filter((entry) => toChainId(entry.chainId) === chainId);
+  if (pool.length === 0) {
+    throw new Error(`No chainlist entries matched chain keyword '${chainKeyword}' on ${network} with chainId ${chainId}`);
+  }
+
   return [...pool].sort((a, b) => {
-    const left = rankEntry(a, network);
-    const right = rankEntry(b, network);
+    const left = rankEntry(a, chainKeyword, network);
+    const right = rankEntry(b, chainKeyword, network);
     for (let i = 0; i < left.length; i += 1) {
       if (left[i] !== right[i]) return right[i] - left[i];
     }
@@ -252,9 +321,13 @@ async function checkRpcWsUrl(url: string): Promise<UrlCheck> {
     };
 
     ws.onerror = (event) => {
+      const eventWithError =
+        typeof event === "object" && event !== null && "error" in event
+          ? (event as { error?: unknown })
+          : undefined;
       const message =
-        event instanceof ErrorEvent && event.error instanceof Error
-          ? event.error.message
+        eventWithError?.error instanceof Error
+          ? eventWithError.error.message
           : "WebSocket error";
       finish({ url, valid: false, error: message });
     };
@@ -326,19 +399,20 @@ async function validateEntry(entry: ChainEntry): Promise<{
 }
 
 async function main(): Promise<void> {
-  const network = normalizeNetwork(process.argv[2]);
-  const command = (process.argv[3] ?? "info").trim().toLowerCase();
+  const { chainKeyword, network, command, chainId } = parseCliArgs(process.argv.slice(2));
   if (command !== "info") {
     console.error("Only the 'info' command is supported.");
     process.exit(1);
   }
 
   const chainlist = await loadChainlist();
-  const entry = chooseEntry(chainlist, network);
+  const entry = chooseEntry(chainlist, chainKeyword, network, chainId);
   const checks = await validateEntry(entry);
 
   const lines = [
+    `Chain Query: ${chainKeyword}`,
     `Network: ${network}`,
+    ...(chainId === undefined ? [] : [`Requested Chain ID: ${chainId}`]),
     `Name: ${entry.name ?? entry.title ?? entry.chain ?? ""}`,
     `Chain: ${entry.chain ?? ""}`,
     `Chain ID: ${toChainId(entry.chainId)}`,
