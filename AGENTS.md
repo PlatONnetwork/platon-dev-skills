@@ -18,5 +18,8 @@ This repository stores canonical PlatON skills.
 
 ## Current Skills
 
+- `platon-blockscout`
 - `platon-chainlist`
 - `platon-cli`
+- `platon-crosschain`
+- `platon-aawallet`

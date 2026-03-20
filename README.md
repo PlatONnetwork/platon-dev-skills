@@ -8,6 +8,7 @@ This repository stores canonical reusable skills for PlatON development workflow
 - `platon-cli`: query PlatON on-chain data with Foundry `cast`
 - `platon-blockscout`: query PlatON explorer data from Blockscout
 - `platon-crosschain`: query PlatON bridge routes, bridge transactions, and crosschain contract guidance
+- `platon-aawallet`: integrate PlatON AA wallet ERC-4337 contracts from any language or SDK
 
 Current `platon-blockscout` coverage includes:
 
@@ -23,6 +24,7 @@ Suggested skill boundary:
 - use `platon-cli` for direct RPC reads and writes
 - use `platon-blockscout` for explorer-style indexed data and verified-contract metadata
 - use `platon-crosschain` for bridge route discovery, bridge transaction lookup, and crosschain bridge guidance
+- use `platon-aawallet` for PlatON AA wallet ERC-4337 integration flows across languages and SDKs
 
 Each skill follows the shared open skill contract:
 
@@ -41,6 +43,7 @@ Each skill follows the shared open skill contract:
 ├── platon-chainlist/
 ├── platon-cli/
 ├── platon-crosschain/
+├── platon-aawallet/
 └── README.md
 ```
 

@@ -20,6 +20,11 @@
       "name": "platon-crosschain",
       "source": "./platon-crosschain",
       "description": "PlatON crosschain skill for bridge routes, bridge transactions, and cast-oriented contract guidance."
+    },
+    {
+      "name": "platon-aawallet",
+      "source": "./platon-aawallet",
+      "description": "PlatON AA wallet skill for ERC-4337 integration across languages and SDKs, including wallet creation, UserOperation construction, paymaster flows, signature packing, and troubleshooting."
     }
   ]
 }

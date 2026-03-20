@@ -1,0 +1,4 @@
+version: 1
+display_name: PlatON AAWallet Integration
+short_description: Language-agnostic integration guide for third-party services using this repository's ERC-4337 AA wallet contracts
+default_prompt: Help integrate this repository's ERC-4337 AA wallet contracts from a third-party app or backend. Explain the protocol rules in a language-agnostic way first, then provide optional examples for wallet creation, address prediction, UserOperation construction, paymaster integration, signature packing, and troubleshooting.
