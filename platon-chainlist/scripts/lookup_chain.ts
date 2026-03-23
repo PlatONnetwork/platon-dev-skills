@@ -126,6 +126,12 @@ function toChainId(value: unknown): number {
   return -1;
 }
 
+function formatChainId(value: unknown): string {
+  const chainId = toChainId(value);
+  if (chainId <= 0) return String(chainId);
+  return `${chainId} (0x${chainId.toString(16)})`;
+}
+
 function collectText(entry: ChainEntry): string {
   return [
     entry.name ?? "",
@@ -415,7 +421,7 @@ async function main(): Promise<void> {
     ...(chainId === undefined ? [] : [`Requested Chain ID: ${chainId}`]),
     `Name: ${entry.name ?? entry.title ?? entry.chain ?? ""}`,
     `Chain: ${entry.chain ?? ""}`,
-    `Chain ID: ${toChainId(entry.chainId)}`,
+    `Chain ID: ${formatChainId(entry.chainId)}`,
   ];
 
   if (entry.nativeCurrency) {

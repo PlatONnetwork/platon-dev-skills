@@ -56,7 +56,7 @@ Mainnet defaults:
 - Explorer: `https://blockscout.platon.network/`
 - HTTP RPC: `https://openapi2.platon.network/rpc`
 - WebSocket RPC: `wss://openapi2.platon.network/ws`
-- Chain ID: `210425`
+- Chain ID: `210425 (0x335f9)`
 
 Devnet defaults:
 
@@ -64,7 +64,7 @@ Devnet defaults:
 - Explorer: `https://devnet3blockscout.platon.network/`
 - HTTP RPC: `https://devnet3openapi.platon.network/rpc`
 - WebSocket RPC: `wss://devnet3openapi.platon.network/ws`
-- Chain ID: `20250407`
+- Chain ID: `20250407 (0x134ff27)`
 
 Faucet:
 
